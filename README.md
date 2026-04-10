@@ -45,18 +45,6 @@ DB_USER=root
 DB_PASSWORD=your_mysql_password
 ```
 
-Optional evaluation mode values:
-
-```env
-APP_MODE=evaluation
-EVAL_EXPIRES_AT=2026-12-31
-EVAL_MAX_STUDENTS=20
-EVAL_MAX_TASKS=50
-```
-
-When `APP_MODE=evaluation`, backend blocks new student/task creation after limits are reached
-and blocks creation after the expiry date.
-
 ### 3) Frontend
 
 In another terminal:
