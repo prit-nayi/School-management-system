@@ -29,6 +29,20 @@ app.use('/api/tasks', requireAuth, taskRoutes)
 const port = process.env.PORT || 5000
 
 async function start() {
+  const disableDb = process.env.DISABLE_DB === 'true' || process.env.DISABLE_DB === '1'
+
+  if (disableDb) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      'DISABLE_DB: API started without MySQL. Login uses bridge credentials in src/routes/auth.js; /api/students and /api/tasks will fail until a database is connected.',
+    )
+    app.listen(port, () => {
+      // eslint-disable-next-line no-console
+      console.log(`API listening on http://localhost:${port}`)
+    })
+    return
+  }
+
   if (!process.env.DB_SERVER) throw new Error('DB_SERVER missing')
   if (!process.env.DB_NAME) throw new Error('DB_NAME missing')
   if (!process.env.DB_USER) throw new Error('DB_USER missing')
