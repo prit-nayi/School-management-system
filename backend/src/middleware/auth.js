@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const authRoutes = require('../routes/auth')
 
 function requireAuth(req, res, next) {
   const header = req.headers.authorization || ''
@@ -6,8 +7,11 @@ function requireAuth(req, res, next) {
 
   if (!token) return res.status(401).json({ message: 'Missing token' })
 
+  const secret =
+    typeof authRoutes.getJwtSecret === 'function' ? authRoutes.getJwtSecret() : process.env.JWT_SECRET
+
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET)
+    const payload = jwt.verify(token, secret)
     req.user = payload
     next()
   } catch {
